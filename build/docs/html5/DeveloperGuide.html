@@ -1,0 +1,2874 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]--><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Asciidoctor 1.5.6.1"><title>OwlMoney - Developer Guide</title><link rel="stylesheet" href="stylesheets/gh-pages.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css"></head><body class="article"><div id="site-header"><nav class="navbar navbar-light bg-light"><div class="container"><a class="navbar-brand" href="index.html">OwlMoney</a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="UserGuide.html">User Guide</a></li><li class="nav-item"><a class="nav-link active" href="DeveloperGuide.html">Developer Guide</a></li><li class="nav-item"><a class="nav-link" href="AboutUs.html">About Us</a></li><li class="nav-item"><a class="nav-link" href="ContactUs.html">Contact Us</a></li><li class="navitem"><a class="nav-link" href="https://github.com/AY1920S1-CS2113T-W17-3/main"><span class="fa fa-github fa-lg" aria-hidden="true"></span>&nbsp;View on GitHub</a></li></ul></div></nav></div><div id="header"><h1>OwlMoney - Developer Guide</h1></div><div id="content"><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>By: <code>Team W17-3</code>      Since: <code>Aug 2019</code>      Licence: <code>MIT</code></p>
+</div>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle"></div>
+<ul class="sectlevel1">
+<li><a href="#setting-up">1. Setting up</a>
+<ul class="sectlevel2">
+<li><a href="#prerequisites">1.1. Prerequisites</a></li>
+<li><a href="#setting-up-the-project-in-your-computer">1.2. Setting up the project in your computer</a></li>
+<li><a href="#verifying-the-setup">1.3. Verifying the setup</a></li>
+<li><a href="#configurations-to-do-before-writing-code">1.4. Configurations to do before writing code</a></li>
+</ul>
+</li>
+<li><a href="#design">2. Design</a>
+<ul class="sectlevel2">
+<li><a href="#architecture">2.1. Architecture</a></li>
+<li><a href="#ui-component">2.2. UI Component</a></li>
+<li><a href="#logic-component">2.3. Logic Component</a></li>
+<li><a href="#model-component">2.4. Model Component</a></li>
+<li><a href="#storage-component">2.5. Storage Component</a></li>
+<li><a href="#common-classes">2.6. Common Classes</a></li>
+</ul>
+</li>
+<li><a href="#implementation">3. Implementation</a>
+<ul class="sectlevel2">
+<li><a href="#undo-redo-feature">3.1. Undo/Redo feature</a></li>
+</ul>
+</li>
+<li><a href="#documentation">4. Documentation</a>
+<ul class="sectlevel2">
+<li><a href="#editing-documentation">4.1. Editing Documentation</a></li>
+<li><a href="#publishing-documentation">4.2. Publishing Documentation</a></li>
+<li><a href="#converting-to-pdf-format">4.3. Converting to PDF format</a></li>
+<li><a href="#site-wide-documentation-settings">4.4. Site-wide Documentation Settings</a></li>
+<li><a href="#per-file-documentation-settings">4.5. Per-file Documentation Settings</a></li>
+<li><a href="#site-template">4.6. Site Template</a></li>
+</ul>
+</li>
+<li><a href="#testing">5. Testing</a>
+<ul class="sectlevel2">
+<li><a href="#running-tests">5.1. Running Tests</a></li>
+<li><a href="#types-of-tests">5.2. Types of Tests</a></li>
+<li><a href="#troubleshooting-tests">5.3. Troubleshooting Tests</a></li>
+</ul>
+</li>
+<li><a href="#dev-ops">6. Dev Ops</a>
+<ul class="sectlevel2">
+<li><a href="#build-automation">6.1. Build Automation</a></li>
+<li><a href="#continuous-integration">6.2. Continuous Integration</a></li>
+<li><a href="#coverage-reporting">6.3. Coverage Reporting</a></li>
+<li><a href="#documentation-previews">6.4. Documentation Previews</a></li>
+<li><a href="#making-a-release">6.5. Making a Release</a></li>
+<li><a href="#managing-dependencies">6.6. Managing Dependencies</a></li>
+</ul>
+</li>
+<li><a href="#product-scope">Appendix A: Product Scope</a></li>
+<li><a href="#user-stories">Appendix B: User Stories</a></li>
+<li><a href="#use-cases">Appendix C: Use Cases</a></li>
+<li><a href="#non-functional-requirements">Appendix D: Non Functional Requirements</a></li>
+<li><a href="#glossary">Appendix E: Glossary</a></li>
+<li><a href="#instructions-for-manual-testing">Appendix F: Instructions for Manual Testing</a></li>
+</ul>
+</div>
+</div>
+<div class="sect1">
+<h2 id="setting-up"><a class="link" href="#setting-up">1. Setting up</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="prerequisites"><a class="link" href="#prerequisites">1.1. Prerequisites</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>JDK <code>11</code></strong></p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Only JDK 11 is officially supported
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p><strong>IntelliJ</strong> IDE</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+IntelliJ by default has Gradle and JavaFx plugins installed.<br>
+Do not disable them. If you have disabled them, go to <code>File</code> &gt; <code>Settings</code> &gt; <code>Plugins</code> to re-enable them.
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="setting-up-the-project-in-your-computer"><a class="link" href="#setting-up-the-project-in-your-computer">1.2. Setting up the project in your computer</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Fork this repo, and clone the fork to your computer</p>
+</li>
+<li>
+<p>Open IntelliJ (if you are not in the welcome screen,
+click <code>File</code> &gt; <code>Close Project</code> to close the existing project dialog first)</p>
+</li>
+<li>
+<p>Set up the correct JDK version for Gradle</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Click <code>Configure</code> &gt; <code>Project Defaults</code> &gt; <code>Project Structure</code></p>
+</li>
+<li>
+<p>Click <code>New&#8230;&#8203;</code> and find the directory of the JDK</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Click <code>Import Project</code></p>
+</li>
+<li>
+<p>Locate the <code>build.gradle</code> file and select it. Click <code>OK</code></p>
+</li>
+<li>
+<p>Click <code>Open as Project</code></p>
+</li>
+<li>
+<p>Click <code>OK</code> to accept the default settings</p>
+</li>
+<li>
+<p>Open a console and run the command <code>gradlew processResources</code> (Mac/Linux: <code>./gradlew processResources</code>).
+It should finish with the <code>BUILD SUCCESSFUL</code> message.<br>
+This will generate all resources required by the application and tests.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="verifying-the-setup"><a class="link" href="#verifying-the-setup">1.3. Verifying the setup</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="configurations-to-do-before-writing-code"><a class="link" href="#configurations-to-do-before-writing-code">1.4. Configurations to do before writing code</a></h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="design"><a class="link" href="#design">2. Design</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="architecture"><a class="link" href="#architecture">2.1. Architecture</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="ui-component"><a class="link" href="#ui-component">2.2. UI Component</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="logic-component"><a class="link" href="#logic-component">2.3. Logic Component</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="model-component"><a class="link" href="#model-component">2.4. Model Component</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="storage-component"><a class="link" href="#storage-component">2.5. Storage Component</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="common-classes"><a class="link" href="#common-classes">2.6. Common Classes</a></h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="implementation"><a class="link" href="#implementation">3. Implementation</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="undo-redo-feature"><a class="link" href="#undo-redo-feature">3.1. Undo/Redo feature</a></h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="documentation"><a class="link" href="#documentation">4. Documentation</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="editing-documentation"><a class="link" href="#editing-documentation">4.1. Editing Documentation</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="publishing-documentation"><a class="link" href="#publishing-documentation">4.2. Publishing Documentation</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="converting-to-pdf-format"><a class="link" href="#converting-to-pdf-format">4.3. Converting to PDF format</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="site-wide-documentation-settings"><a class="link" href="#site-wide-documentation-settings">4.4. Site-wide Documentation Settings</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="per-file-documentation-settings"><a class="link" href="#per-file-documentation-settings">4.5. Per-file Documentation Settings</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="site-template"><a class="link" href="#site-template">4.6. Site Template</a></h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="testing"><a class="link" href="#testing">5. Testing</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="running-tests"><a class="link" href="#running-tests">5.1. Running Tests</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="types-of-tests"><a class="link" href="#types-of-tests">5.2. Types of Tests</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="troubleshooting-tests"><a class="link" href="#troubleshooting-tests">5.3. Troubleshooting Tests</a></h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dev-ops"><a class="link" href="#dev-ops">6. Dev Ops</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="build-automation"><a class="link" href="#build-automation">6.1. Build Automation</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="continuous-integration"><a class="link" href="#continuous-integration">6.2. Continuous Integration</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="coverage-reporting"><a class="link" href="#coverage-reporting">6.3. Coverage Reporting</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="documentation-previews"><a class="link" href="#documentation-previews">6.4. Documentation Previews</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="making-a-release"><a class="link" href="#making-a-release">6.5. Making a Release</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="managing-dependencies"><a class="link" href="#managing-dependencies">6.6. Managing Dependencies</a></h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="product-scope"><a class="link" href="#product-scope">Appendix A: Product Scope</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Target User Profile:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Undergraduates and fresh graduates</p>
+</li>
+<li>
+<p>Have some form of income in terms of allowance, pocket money or salary</p>
+</li>
+<li>
+<p>Has interest in managing his finances</p>
+</li>
+<li>
+<p>Prefers desktop applications over other types</p>
+</li>
+<li>
+<p>Able to type fast</p>
+</li>
+<li>
+<p>Prefers typing over other means of input</p>
+</li>
+<li>
+<p>Is reasonably comfortable using CLI applications</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Value Proposition:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Helps the target user manage their finances as they start to take charge of more money</p>
+</li>
+<li>
+<p>Helps the target user budget their expenses based on their goals</p>
+</li>
+<li>
+<p>Automatically reminds you of upcoming bills that are due to pay</p>
+</li>
+<li>
+<p>Automatically deducts or credit to account based on recurring income and expenses monthly</p>
+</li>
+<li>
+<p>See everything from account balances and expenses to give target users a full picture of their financial health.</p>
+</li>
+<li>
+<p>Works offline</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="user-stories"><a class="link" href="#user-stories">Appendix B: User Stories</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Priorities: High (must have) - <code>* * *</code>, Medium (nice to have) - <code>* *</code>, Low (unlikely to have) - <code>*</code></p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 5.2631%;">
+<col style="width: 10.5263%;">
+<col style="width: 10.5263%;">
+<col style="width: 36.8421%;">
+<col style="width: 36.8422%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>S/N</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Priority Level</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>As a &#8230;&#8203;</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>I can &#8230;&#8203;</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>So that I can &#8230;&#8203;</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* * *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">new user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">create my own profile</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">start keeping track of my finances</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* * *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">add saving accounts</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">categorise my finances</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* * *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">add income</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">calculate my recommended budget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* * *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">edit my profile details</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">keep my details up to date</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* * *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">edit my saving account</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">correct any errors</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* * *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">edit my income</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">change it when there are changes to my income.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* * *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">spendthrift</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">add expenditures</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">keep track of my spending</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* * *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">careless user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">edit my expenditure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">correct my errors.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* * *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">careless user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">delete my expenditure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">remove wrongly added expenses</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* * *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">organised user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list my expenditure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">have a view of my spending</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* * *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">search for specific expenditures by category and description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">search and view specific expenditure records.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">set short and long term financial goals</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I can achieve financial stability.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">indecisive user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">edit my existing financial goals</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">adapt to any changes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">undo my last command</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">revert back to the previous state in the event of a mistake</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">compare overall expenditure of different month</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">review my spending</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">credit card user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">add new credit cards to my account</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">credit my spending till the end of the month</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">credit card user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">charge my expenditures to my credit card</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">track my credit card rebates</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">credit card user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">edit my credit card details</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">update the details when there are changes to my card</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">spendthrift</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">be warned when I am close to exceeding my budget or have exceeded my budget</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">reduce my spending</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">recurring expenditures</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">relax and not need to enter it repeatedly for each month.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user with income</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">set recurring income</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">relax and not need to enter it repeatedly for each month.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">view recurring expenditure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">review it to check for error</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">23</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user with income</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">view recurring income</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">review it to check for error</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">edit recurring expenditure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">amend the recurring expenses when it increases or decreases</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user with income</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">edit recurring income</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I can remove or change it accordingly</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">be reminded when my payment is due</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pay on time without penalties</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">27</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">organised user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">export to view my expenditures statement</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">review my monthly, quarterly and yearly expenses with ease</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">achievement oriented user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gain achievements when I achieve system pre-defined goals</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">be motivated to pursue my financial goal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">29</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">achievement oriented user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">view different types of achievements</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">view my achievement that has been attained or yet to be attained</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">achievement oriented user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">view the description of an achievement</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">understand how to achieve it</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">31</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">add investment account (bond)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">track my investment bond earnings.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">edit my investment account (bond)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">amend any errors in my investment bond account</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">33</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">delete my investment account (bond)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sell it before the maturity date.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">34</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">have my investment account’s (bond) interest being accumulated automatically every half yearly</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">do not have to go through the hassle of entering it manually</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">35</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existing user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">have my money transfer from one bank account to another bank account</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I can organize them as investment or saving account for ease in tracking different expenditure</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">organised user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list my card details</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">view the specific details like cashback rate and credit limit of my card.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">37</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* *</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">organised user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list my card expenditures</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">view how much I have spent and reduce my spending accordingly.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="use-cases"><a class="link" href="#use-cases">Appendix C: Use Cases</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(For all use cases below, the System is OwlMoney, unless specified otherwise)</p>
+</div>
+<div class="paragraph">
+<p><strong>Actor: First time user</strong><br>
+<a id="UC-1"></a> <strong>Use case: UC1 - Create new profile</strong><br>
+<strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User choose to setup account.</p>
+</li>
+<li>
+<p>System requests personal details.</p>
+</li>
+<li>
+<p>User enters personal details.</p>
+</li>
+<li>
+<p>System requests for bank account details.</p>
+</li>
+<li>
+<p>User enters bank account details <a href="#UC-2">(UC-2)</a>.</p>
+</li>
+<li>
+<p>System requests for income details.</p>
+</li>
+<li>
+<p>User enters income details <a href="#UC-3">(UC-3)</a>.</p>
+</li>
+<li>
+<p>System will setup a profile tied to new bank account with the details specified.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input in personal details.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>5a. System detects invalid user input in bank account details.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>5a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>5a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 5a1-5a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 6.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>7a. System detects invalid user input in income details.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>7a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>7a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 7a1-7a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 8.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: User</strong><br>
+<a id="UC-2"></a> <strong>Use case: UC2 - Add bank account</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to add a bank account.</p>
+</li>
+<li>
+<p>System requests for bank account details.</p>
+</li>
+<li>
+<p>User enters details for the new bank account.</p>
+</li>
+<li>
+<p>System creates a new bank account with the details specified.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: User</strong><br>
+<a id="UC-3"></a> <strong>Use case: UC3 - Add income</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to add income.</p>
+</li>
+<li>
+<p>System requests for income details.</p>
+</li>
+<li>
+<p>User enters income details.</p>
+</li>
+<li>
+<p>System creates a new income with the details specified.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing User</strong><br>
+<a id="UC-4"></a> <strong>Use case: UC4 - Edit profile details</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to edit his/her profile.</p>
+</li>
+<li>
+<p>System requests for new profile details.</p>
+</li>
+<li>
+<p>User enters new profile details.</p>
+</li>
+<li>
+<p>System update the profile details</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing User</strong><br>
+<a id="UC-5"></a> <strong>Use case: UC5 - Edit bank account details</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong><br></p>
+</li>
+<li>
+<p><strong>User has an existing bank account</strong><br></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to edit his/her bank account details.</p>
+</li>
+<li>
+<p>System requests for new bank account details.</p>
+</li>
+<li>
+<p>User enters new bank account details.</p>
+</li>
+<li>
+<p>System update the bank account details.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-6"></a> <strong>Use case: UC6 - Edit income</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>* User has a profile created</p>
+</li>
+<li>
+<p>* User has an existing income account</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to edit his/her income.</p>
+</li>
+<li>
+<p>System requests new income details.</p>
+</li>
+<li>
+<p>User enters new income details.</p>
+</li>
+<li>
+<p>System updates the income details.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Spendthrift</strong><br>
+<a id="UC-7"></a> <strong>Use case: UC7 - Add expenditures record</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to add new expenditure record.</p>
+</li>
+<li>
+<p>System requests expenditure details.</p>
+</li>
+<li>
+<p>User enters expenditure details.</p>
+</li>
+<li>
+<p>System adds new expenditure record.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Careless user</strong><br>
+<a id="UC-8"></a> <strong>Use case: UC8 - Edit expenditures record</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has existing expenditure records</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to edit expenditure record.</p>
+</li>
+<li>
+<p>System requests new expenditure details.</p>
+</li>
+<li>
+<p>User enters new expenditure details.</p>
+</li>
+<li>
+<p>System updates the expenditure record.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Careless user</strong><br>
+<a id="UC-9"></a> <strong>Use case: UC9 -  Delete expenditure record</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has existing expenditure records</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to delete expenditure record.</p>
+</li>
+<li>
+<p>System requests expenditure to be deleted.</p>
+</li>
+<li>
+<p>User specifies the expenditure to be deleted.</p>
+</li>
+<li>
+<p>System deletes the specified record from the database.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Organized user</strong><br>
+<a id="UC-10"></a>  <strong>Use case: UC10 -  List expenditure record</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has existing expenditure records</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to list the expenditure record.</p>
+</li>
+<li>
+<p>System requests the type of expenditure to be listed.</p>
+</li>
+<li>
+<p>User specifies the type of expenditure to be listed.</p>
+</li>
+<li>
+<p>System displays the expenditure records specified.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-11"></a> <strong>Use case: UC11 -  Search for specific expenditure record</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has existing expenditure records</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to search for expenditure record.</p>
+</li>
+<li>
+<p>System requests the keyword to be search.</p>
+</li>
+<li>
+<p>User specifies the keyword to be search.</p>
+</li>
+<li>
+<p>System displays information found from the search.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-12"></a> <strong>Use case: UC12 - Set short or long term financial goal</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to set financial goals.</p>
+</li>
+<li>
+<p>System requests the type of financial goal to be set.</p>
+</li>
+<li>
+<p>User specifies the type of financial goal to be set.</p>
+</li>
+<li>
+<p>System requests information for the financial goal.</p>
+</li>
+<li>
+<p>User enters the information required for setting the financial goal.</p>
+</li>
+<li>
+<p>System creates the financial goal.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>5a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>5a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>5a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 5a1-5a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 6.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Indecisive user</strong><br>
+<a id="UC-13"></a> <strong>Use case: UC13 -  Edit existing financial goal</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has a financial goal set up</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to edit existing financial goal.</p>
+</li>
+<li>
+<p>System requests the financial goal to be edited.</p>
+</li>
+<li>
+<p>User specifies the financial goal to be edited.</p>
+</li>
+<li>
+<p>System requests the information to be edited.</p>
+</li>
+<li>
+<p>User enters the information to be updated.</p>
+</li>
+<li>
+<p>System updates existing financial goal.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>5a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>5a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>5a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 5a1-5a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 6.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-14"></a> <strong>Use case: UC14 -  Undo last command</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User entered at least one command in the system</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User enters the undo command.</p>
+</li>
+<li>
+<p>System returns to the state before the previous command is entered.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>None</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-15"></a> <strong>Use case: UC15 - Compare overall expenditure of different month</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has at least two previous month expenditure to compare with</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to compare overall expenditure of different months.</p>
+</li>
+<li>
+<p>System requests the months to be compared.</p>
+</li>
+<li>
+<p>User specifies the months to be compared.</p>
+</li>
+<li>
+<p>System displays the compared result.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Credit card user</strong><br>
+<a id="UC-16"></a> <strong>Use case: UC16 - Add credit card to account</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to add a credit card to his/her account.</p>
+</li>
+<li>
+<p>System requests the details for creating credit card.</p>
+</li>
+<li>
+<p>User enters the details for creating credit card.</p>
+</li>
+<li>
+<p>System creates the credit card.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Credit card user</strong><br>
+<a id="UC-17"></a> <strong>Use case: UC17 - Charge expenditure to credit card</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has credit card added to profile</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to charge expenditure to credit card.</p>
+</li>
+<li>
+<p>System requests the expenditure information.</p>
+</li>
+<li>
+<p>User enters the expenditure information.</p>
+</li>
+<li>
+<p>System creates the credit card expenditure record.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Credit card user</strong><br>
+<a id="UC-18"></a> <strong>Use case: UC18 - Edit credit card details</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has credit card added to profile</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to edit credit card details.</p>
+</li>
+<li>
+<p>System requests for new credit card details.</p>
+</li>
+<li>
+<p>User enters new credit card details.</p>
+</li>
+<li>
+<p>System updates the credit card details.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Spendthrift user</strong><br>
+<a id="UC-19"></a> <strong>Use case: UC19 - System warns user when exceeding or have exceeded budget</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User adds expenditure <a href="#UC-7">(UC-7)</a>.</p>
+</li>
+<li>
+<p>System warns user if total expenditure is exceeding or have exceeded budget.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>None</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-20"></a> <strong>Use case: UC20 - Set recurring expenditure</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to set recurring expenditure.</p>
+</li>
+<li>
+<p>System requests for details of recurring expenditure.</p>
+</li>
+<li>
+<p>User enters details of recurring expenditure.</p>
+</li>
+<li>
+<p>System creates recurring expenditure.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: User with income</strong><br>
+<a id="UC-21"></a> <strong>Use case: UC21 - Set recurring income</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to set recurring income.</p>
+</li>
+<li>
+<p>System requests for details of recurring income.</p>
+</li>
+<li>
+<p>User enters details of recurring income.</p>
+</li>
+<li>
+<p>System creates recurring income.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-22"></a> <strong>Use case: UC22 - View recurring expenditure</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has at least a recurring expenditure.</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to view recurring expenditure.</p>
+</li>
+<li>
+<p>System displays all recurring payments in chronological order.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>None</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: User with income</strong><br>
+<a id="UC-23"></a> <strong>Use case: UC23 - View recurring income</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has at least a recurring income.</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to view recurring income.</p>
+</li>
+<li>
+<p>System displays all recurring income in chronological order.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>None</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-24"></a> <strong>Use case: UC24 - Edit recurring expenditure</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has at least a recurring expenditure.</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to edit recurring expenditure.</p>
+</li>
+<li>
+<p>System requests from user the recurring expenditure to be edited.</p>
+</li>
+<li>
+<p>User specifies the recurring expenditure.</p>
+</li>
+<li>
+<p>System requests for the new recurring expenditure details.</p>
+</li>
+<li>
+<p>User enters the new recurring expenditure details.</p>
+</li>
+<li>
+<p>System updates the recurring expenditure.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+<li>
+<p>5a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>5a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>5a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 5a1-5a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 6.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: User with income</strong><br>
+<a id="UC-25"></a> <strong>Use case: UC25 - Edit recurring income</strong> <br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has at least a recurring income.</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to edit recurring income.</p>
+</li>
+<li>
+<p>System requests from user the recurring income to be edited.</p>
+</li>
+<li>
+<p>User specifies the recurring income.</p>
+</li>
+<li>
+<p>System requests for the new recurring income details.</p>
+</li>
+<li>
+<p>User enters the new recurring income details.</p>
+</li>
+<li>
+<p>System updates the recurring income.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>5a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>5a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>5a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 5a1-5a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 6.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-26"></a> <strong>Use case: UC26 - Reminded of due payment</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has at least a recurring expenditure or credit card expenditure</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to check for due payment.</p>
+</li>
+<li>
+<p>System display due payment.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>None</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Organized user</strong><br>
+<a id="UC-27"></a> <strong>Use case: UC27 - Export expenditures statement as HTML</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong>
+<strong>Main success scenario:</strong></p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to export expenditure statement.</p>
+</li>
+<li>
+<p>System requests for which month expenditure statement to be exported.</p>
+</li>
+<li>
+<p>User specifies the months.</p>
+</li>
+<li>
+<p>System exports the specified expenditure statement as HTML.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Achievement oriented user</strong><br>
+<a id="UC-28"></a> <strong>Use case: UC28 - Gain achievement</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User meets a predefined achievement criteria.</p>
+</li>
+<li>
+<p>System informs user that an achievement has been achieved.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>None</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Achievement oriented user</strong><br>
+<a id="UC-29"></a> <strong>Use case: UC29 - View different types of achievements</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created.</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to view achievements.</p>
+</li>
+<li>
+<p>System requests for types of achievement to view.</p>
+</li>
+<li>
+<p>User specifies the type of achievement.</p>
+</li>
+<li>
+<p>System displays all achievements of the specified type.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Achievement oriented user</strong><br>
+<a id="UC-30"></a> <strong>Use case: UC30 - View description of an achievement</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created.</strong>
+<strong>Main success scenario:</strong></p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to view achievement description.</p>
+</li>
+<li>
+<p>System requests for which specific achievement to view.</p>
+</li>
+<li>
+<p>User specifies the achievement.</p>
+</li>
+<li>
+<p>System displays description of the achievement.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-31"></a> <strong>Use case: UC31 - Add investment account (bond)</strong><br>
+<strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User choose to add investment account.</p>
+</li>
+<li>
+<p>System requests for investment account details.</p>
+</li>
+<li>
+<p>User enters investment account details.</p>
+</li>
+<li>
+<p>System creates an investment account.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input in personal details.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-32"></a> <strong>Use case: UC32 - Edit investment account (bond)</strong><br>
+<strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User choose to edit investment account.</p>
+</li>
+<li>
+<p>System requests for new investment account details.</p>
+</li>
+<li>
+<p>User enters investment account details.</p>
+</li>
+<li>
+<p>System updates the investment account.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input in personal details.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-33"></a> <strong>Use case: UC33 - Delete investment account (bond)</strong><br>
+<strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User choose to delete investment account.</p>
+</li>
+<li>
+<p>System requests for investment account to be deleted.</p>
+</li>
+<li>
+<p>User selects the investment account to be deleted.</p>
+</li>
+<li>
+<p>System deletes the investment account.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input in personal details.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-34"></a> <strong>Use case: UC34 - Automatically calculate half yearly interest for investment account (bond)</strong><br>
+<strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User starts up the program.</p>
+</li>
+<li>
+<p>System runs the check and calculate the interest accordingly.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>None</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Existing user</strong><br>
+<a id="UC-35"></a> <strong>Use case: UC35 - Transfer money between different bank accounts</strong><br>
+<strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User choose to transfer money to another bank account.</p>
+</li>
+<li>
+<p>System requests for destination account and amount to transfer.</p>
+</li>
+<li>
+<p>User enters the details of destination account and amount to transfer.</p>
+</li>
+<li>
+<p>System transfers the amount to the specified account.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a. System detects invalid user input in personal details.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Organized User</strong><br>
+<a id="UC-36"></a> <strong>Use case: UC36 - Gain achievement</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has added a credit card to the profile</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User choose to list credit card details.</p>
+</li>
+<li>
+<p>System displays all credit card details.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>None</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actor: Organized User</strong><br>
+<a id="UC-37"></a> <strong>Use case: UC37 - Gain achievement</strong><br>
+<strong>Preconditions:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User has a profile created</strong></p>
+</li>
+<li>
+<p><strong>User has added a credit card to the profile</strong></p>
+</li>
+<li>
+<p><strong>User has expenditure added to credit card</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Main success scenario:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User chooses to list the card expenditure record.</p>
+</li>
+<li>
+<p>System requests name of the card for the expenditure to be listed.</p>
+</li>
+<li>
+<p>User specifies the name of the card for the expenditure to be listed.</p>
+</li>
+<li>
+<p>System displays the expenditure records specified.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>3a. System detects invalid user input.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3a1. System requests for the correct user input.</p>
+</li>
+<li>
+<p>3a2. User re-enters input.</p>
+</li>
+<li>
+<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+</li>
+<li>
+<p>Use case resumes from step 4.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="non-functional-requirements"><a class="link" href="#non-functional-requirements">Appendix D: Non Functional Requirements</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The application should work on any computer running a <a href="#mainstream-os">mainstream OS</a> OS that has Java 11 installed.</p>
+</li>
+<li>
+<p>The application should work on both 32-bit and 64-bit environments.</p>
+</li>
+<li>
+<p>The application should work without requiring any internet access.</p>
+</li>
+<li>
+<p>The application should work without requiring an installer.</p>
+</li>
+<li>
+<p>The application should be able to store at least 3500 transactions per year.</p>
+</li>
+<li>
+<p>A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most tasks faster using CLI than GUI.</p>
+</li>
+<li>
+<p>The application should store relevant user data locally on the filesystem and should be persistent, ensuring that the data can be restored on the next startup of the application.</p>
+</li>
+<li>
+<p>The application should have good user documentation, which details all aspects of the application to assist new users on how to use this application.</p>
+</li>
+<li>
+<p>The application should have good developer documentation to allow developers to understand the design of the application easily so that they can further develop it.</p>
+</li>
+<li>
+<p>The application should be easily testable.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="glossary"><a class="link" href="#glossary">Appendix E: Glossary</a></h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><a id="mainstream-os"></a> Mainstream OS</dt>
+<dd>
+<p>Windows, Linux, Unix, OS-X</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="instructions-for-manual-testing"><a class="link" href="#instructions-for-manual-testing">Appendix F: Instructions for Manual Testing</a></h2>
+<div class="sectionbody">
+
+</div>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-19 14:50:47 SGT</div></div></div></body></html>
