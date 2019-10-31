@@ -31,11 +31,9 @@
 <li><a href="#implementation">4. Implementation</a>
 <ul class="sectlevel2">
 <li><a href="#parsing-commands-in-general">4.1. Parsing Commands in General</a></li>
-<li><a href="#adding-savings">4.2. Adding Savings</a></li>
-<li><a href="#editing-bonds">4.3. Editing Bonds</a></li>
-<li><a href="#deleting-credit-card">4.4. Deleting Credit Card</a></li>
-<li><a href="#listing-credit-cards">4.5. Listing Credit Cards</a></li>
-<li><a href="#transferring-funds">4.6. Transferring Funds</a></li>
+<li><a href="#deleting-credit-card">4.2. Deleting Credit Card</a></li>
+<li><a href="#listing-credit-cards">4.3. Listing Credit Cards</a></li>
+<li><a href="#transferring-funds">4.4. Transferring Funds</a></li>
 </ul>
 </li>
 <li><a href="#documentation">5. Documentation</a>
@@ -69,7 +67,17 @@
 <li><a href="#use-cases">Appendix C: Use Cases</a></li>
 <li><a href="#non-functional-requirements">Appendix D: Non Functional Requirements</a></li>
 <li><a href="#glossary">Appendix E: Glossary</a></li>
-<li><a href="#instructions-for-manual-testing">Appendix F: Instructions for Manual Testing</a></li>
+<li><a href="#instructions-for-manual-testing">Appendix F: Instructions for Manual Testing</a>
+<ul class="sectlevel2">
+<li><a href="#launch-and-shutdown">F.1. Launch and Shutdown</a></li>
+<li><a href="#adding-a-savings-account">F.2. Adding a savings account</a></li>
+<li><a href="#adding-an-investment-account">F.3. Adding an investment account</a></li>
+<li><a href="#editing-a-savings-account">F.4. Editing a savings account</a></li>
+<li><a href="#editing-an-investment-account">F.5. Editing an investment account</a></li>
+<li><a href="#adding-an-investment-bond">F.6. Adding an investment bond</a></li>
+<li><a href="#editing-an-investment-bond">F.7. Editing an investment bond</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -455,7 +463,7 @@ will proceed to create an instance of the appropriate command class and return i
 <h4 id="command"><a class="link" href="#command">3.3.2. Command</a></h4>
 <div class="imageblock">
 <div class="content">
-<img src="images/LogicCommandBankPackage.png" alt="LogicCommandBankPackage" width="970">
+<img src="images/LogicCommandBankPackage.png" alt="LogicCommandBankPackage" width="800">
 </div>
 <div class="title">Figure 5. Bank Command Class Diagram</div>
 </div>
@@ -715,16 +723,10 @@ into the the specific Parser classes in <code>ParseTypeMenu</code>.</p>
 <code>ParseAddBond</code>, <code>ParseDeleteInvestment</code>) which will return a <code>Command</code> object back to main to prepare for execution.</p>
 </div>
 <div class="paragraph">
-<p>The execution of commands will be elaborated in subsequent diagrams below.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="adding-savings"><a class="link" href="#adding-savings">4.2. Adding Savings</a></h3>
-<div class="imageblock">
-<div class="content">
-<img src="images/AddSavingCommand.png" alt="AddSavingCommand" width="970">
-</div>
-<div class="title">Figure 13. Sequence Diagram of Adding Savings</div>
+<p>The execution of commands will be elaborated in subsequent diagrams below.
+=== Adding Savings
+.Sequence Diagram of Adding Savings
+image::AddSavingCommand.png[width="800"]</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -806,18 +808,29 @@ bank objects.</p>
 </li>
 <li>
 <p>Once the savings object has been added, the details of the new savings object will be displayed to inform the user
-of the <strong>successful</strong> addition of the savings object.</p>
+of the <strong>successful</strong> addition of the savings object.
+=== Editing Bonds</p>
 </li>
 </ol>
 </div>
+<div class="paragraph">
+<p>The <code>/edit /bonds</code> feature aims to help users update the specific details of the investment <code>bonds</code> that they
+purchase. This is to enable them to not go through the trouble of deleting and re-adding the <code>bond</code> if they enter the
+details wrongly by mistake.</p>
 </div>
-<div class="sect2">
-<h3 id="editing-bonds"><a class="link" href="#editing-bonds">4.3. Editing Bonds</a></h3>
+<div class="sect3">
+<h4 id="current-implementation"><a class="link" href="#current-implementation">4.1.1. Current Implementation</a></h4>
+<div class="paragraph">
+<p>The current implementation of editing <code>bonds</code> only allows for the edition of <code>rate</code> and <code>year</code> where the <code>year</code>
+parameter can only be changed to a higher integer than the original <code>year</code> currently stored. The reason behind only
+allowing these <strong>2</strong> parameters to be changed was because we wanted consistency across all records of crediting
+interest throughout the lifespan of the investment <code>bond</code>.</p>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="images/editBondCommand.png" alt="editBondCommand" width="970">
 </div>
-<div class="title">Figure 14. Sequence Diagram of Editing Bonds</div>
+<div class="title">Figure 13. Sequence Diagram of Editing Bonds</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -954,13 +967,112 @@ of the <strong>successful</strong> editing of the bond.</p>
 </ol>
 </div>
 </div>
+<div class="sect3">
+<h4 id="design-considerations"><a class="link" href="#design-considerations">4.1.2. Design Considerations</a></h4>
+<div class="paragraph">
+<p>This section describes the various design considerations taken when implementing the <code>/edit /bonds</code> feature.</p>
+</div>
+<div class="paragraph">
+<p><strong>Aspect: Choice of whether to allow editing of the bond to tie to which investment account as well as its name</strong></p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 18%;">
+<col style="width: 37%;">
+<col style="width: 45%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Approach</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Pros</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Cons</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>1.</strong> Allowing changing of the investment bank account that the bond ties to.</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="ulist">
+<ul>
+<li>
+<p>More room for customisability from the user&#8217;s perspective.</p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="ulist">
+<ul>
+<li>
+<p>Difficult to implement, have to take care of issues such as whether there is enough space to store bonds in
+the other bank account.</p>
+</li>
+<li>
+<p>All transaction records have to be migrated over to the other bank account and might cause issues such as
+transaction records not appearing in order.</p>
+</li>
+</ul>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>2.</strong> Allowing the changing of bond&#8217;s name.</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="ulist">
+<ul>
+<li>
+<p>Allows the user to change the name of the bond if the user entered it wrongly the first time.</p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="ulist">
+<ul>
+<li>
+<p>If interest has already been credited, it is not feasible to change the names of past records as it might cause
+confusion to the end user. This becomes more apparent when the names clash with the name of another investment bond
+which had expired prior to making this edit. This might confuse users as they might think that they earned much more
+interest from the same bond.</p>
+</li>
+</ul>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p><strong>3.</strong> Disallowing the changing of both parameters.</p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="ulist">
+<ul>
+<li>
+<p>Easier to implement in terms of code.</p>
+</li>
+<li>
+<p>Users are less likely to get confused after editing records to become conflicting.</p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="ulist">
+<ul>
+<li>
+<p>Less flexibility for the user.</p>
+</li>
+</ul>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>After weighting the pros and cons, <strong>approach 3</strong> was taken.</p>
+</div>
+<div class="paragraph">
+<p>Firstly, doing so would reduce the coupling and dependencies between transactions and investment banks. Although it may
+seem restrictive to limit the type and number of parameters that can be changed, it is beneficial both to you, the
+developer and the user, when developing and using the program. Developing the alternative ideas would result in a
+high risk of logic and coding errors, leaving room for bugs to be exploited.</p>
+</div>
+</div>
+</div>
 <div class="sect2">
-<h3 id="deleting-credit-card"><a class="link" href="#deleting-credit-card">4.4. Deleting Credit Card</a></h3>
+<h3 id="deleting-credit-card"><a class="link" href="#deleting-credit-card">4.2. Deleting Credit Card</a></h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/DeleteCardCommand.png" alt="DeleteCardCommand" width="970">
 </div>
-<div class="title">Figure 15. Model Component Diagram</div>
+<div class="title">Figure 14. Model Component Diagram</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1039,12 +1151,12 @@ of the <strong>successful</strong> deletion of the card object.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="listing-credit-cards"><a class="link" href="#listing-credit-cards">4.5. Listing Credit Cards</a></h3>
+<h3 id="listing-credit-cards"><a class="link" href="#listing-credit-cards">4.3. Listing Credit Cards</a></h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/listCardCommand.png" alt="listCardCommand" width="970">
 </div>
-<div class="title">Figure 16. Model Component Diagram</div>
+<div class="title">Figure 15. Model Component Diagram</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1109,12 +1221,12 @@ The sequence diagram presented above is assumed to be a valid command which will
 </div>
 </div>
 <div class="sect2">
-<h3 id="transferring-funds"><a class="link" href="#transferring-funds">4.6. Transferring Funds</a></h3>
+<h3 id="transferring-funds"><a class="link" href="#transferring-funds">4.4. Transferring Funds</a></h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/TransferCommand.png" alt="TransferCommand" width="970">
 </div>
-<div class="title">Figure 17. Model Component Diagram</div>
+<div class="title">Figure 16. Model Component Diagram</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1272,7 +1384,7 @@ Alternatively, you can download the AsciiDoc plugin for IntelliJ, which allows y
 <div class="content">
 <img src="images/chrome_save_as_pdf.png" alt="chrome save as pdf" width="800">
 </div>
-<div class="title">Figure 18. Saving documentation as PDF files in Chrome</div>
+<div class="title">Figure 17. Saving documentation as PDF files in Chrome</div>
 </div>
 </div>
 <div class="sect2">
@@ -2001,17 +2113,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input in personal details.</p>
+<p>3a. System detects invalid personal details.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct personal details.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the personal details.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the personal details entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2020,17 +2132,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 </div>
 </li>
 <li>
-<p>5a. System detects invalid user input in bank account details.</p>
+<p>5a. System detects invalid bank account details.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>5a1. System requests for the correct user input.</p>
+<p>5a1. System requests for the correct bank account details.</p>
 </li>
 <li>
-<p>5a2. User re-enters input.</p>
+<p>5a2. User re-enters the bank account details.</p>
 </li>
 <li>
-<p>Steps 5a1-5a2 are repeated until the input entered are correct.</p>
+<p>Steps 5a1-5a2 are repeated until the bank account details entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 6.</p>
@@ -2039,17 +2151,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 </div>
 </li>
 <li>
-<p>7a. System detects invalid user input in income details.</p>
+<p>7a. System detects invalid income details.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>7a1. System requests for the correct user input.</p>
+<p>7a1. System requests for the correct income details.</p>
 </li>
 <li>
-<p>7a2. User re-enters input.</p>
+<p>7a2. User re-enters the income details.</p>
 </li>
 <li>
-<p>Steps 7a1-7a2 are repeated until the input entered are correct.</p>
+<p>Steps 7a1-7a2 are repeated until the income details entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 8.</p>
@@ -2061,7 +2173,7 @@ specific bank account, credit card or bonds with ease.</p></td>
 </div>
 <div class="paragraph">
 <p><strong>Actor: User</strong><br>
-<a id="UC-2"></a> <strong>Use case: UC2 - Add bank account</strong><br>
+<a id="UC-2"></a> <strong>Use case: UC2 - Add savings account</strong><br>
 <strong>Preconditions:</strong></p>
 </div>
 <div class="ulist">
@@ -2077,16 +2189,16 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User chooses to add a bank account.</p>
+<p>User chooses to add a savings account.</p>
 </li>
 <li>
-<p>System requests for bank account details.</p>
+<p>System requests for savings account details.</p>
 </li>
 <li>
-<p>User enters details for the new bank account.</p>
+<p>User enters details for the new savings account.</p>
 </li>
 <li>
-<p>System creates a new bank account with the details specified.</p>
+<p>System creates a new savings account with the details specified.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -2099,17 +2211,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid details for the new savings account.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct savings account details.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the details for new savings account.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the details for new savings account is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2159,17 +2271,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid income details.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct income details.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the income details.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the income details entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2219,17 +2331,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid profile details.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct profile details.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the profile details.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the profile details entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2241,7 +2353,7 @@ specific bank account, credit card or bonds with ease.</p></td>
 </div>
 <div class="paragraph">
 <p><strong>Actor: Existing User</strong><br>
-<a id="UC-5"></a> <strong>Use case: UC5 - Edit bank account details</strong><br>
+<a id="UC-5"></a> <strong>Use case: UC5 - Edit savings account details</strong><br>
 <strong>Preconditions:</strong></p>
 </div>
 <div class="ulist">
@@ -2250,7 +2362,7 @@ specific bank account, credit card or bonds with ease.</p></td>
 <p><strong>User has a profile created</strong><br></p>
 </li>
 <li>
-<p><strong>User has an existing bank account</strong><br></p>
+<p><strong>User has an existing savings account</strong><br></p>
 </li>
 </ul>
 </div>
@@ -2260,16 +2372,16 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User chooses to edit his/her bank account details.</p>
+<p>User chooses to edit his/her specific savings account details.</p>
 </li>
 <li>
-<p>System requests for new bank account details.</p>
+<p>System requests for the savings account and newly specified information of savings account details.</p>
 </li>
 <li>
-<p>User enters new bank account details.</p>
+<p>User enters the savings account with new savings account information he/she like to change.</p>
 </li>
 <li>
-<p>System update the bank account details.</p>
+<p>System updates the savings account with new savings account details.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -2282,17 +2394,18 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid savings account or invalid new savings account details.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct savings account and savings account details.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the savings account and new savings account details.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the savings account and savings account details are entered
+correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2310,10 +2423,10 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist">
 <ul>
 <li>
-<p>* User has a profile created</p>
+<p><strong>User has a profile created</strong></p>
 </li>
 <li>
-<p>* User has an existing income account</p>
+<p><strong>User has an existing income account</strong></p>
 </li>
 </ul>
 </div>
@@ -2345,17 +2458,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid income details.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct income details.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the income details.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the income details entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2405,17 +2518,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid expenditure details.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct expenditure details.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the expenditure details.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the expenditure details entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2449,10 +2562,10 @@ specific bank account, credit card or bonds with ease.</p></td>
 <p>User chooses to edit expenditure record.</p>
 </li>
 <li>
-<p>System requests new expenditure details.</p>
+<p>System requests for the new expenditure details and the expenditure to be edited.</p>
 </li>
 <li>
-<p>User enters new expenditure details.</p>
+<p>User enters new expenditure details and the expenditure to be edited.</p>
 </li>
 <li>
 <p>System updates the expenditure record.</p>
@@ -2468,17 +2581,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid expenditure details or expenditure to be edited.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct expenditure details and expenditure to be edited.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the expenditure details and expenditure to be edited.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the expenditure details and expenditure to be edited entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2531,17 +2644,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid expenditure to be deleted.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct expenditure to be deleted.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the expenditure to be deleted.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the expenditure to be deleted is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2594,17 +2707,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid type of expenditure to be listed.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct type of expenditure to be listed.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the type of expenditure to be listed.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the type of expenditure to be listed is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2657,17 +2770,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid keyword to be search.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct keyword to be search.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the keyword to be search.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the keyword to be search is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2723,17 +2836,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid type of financial goal to be set.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct type of financial goal to be set.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the type of financial goal to be set.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the type of financial goal to be set is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2742,17 +2855,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 </div>
 </li>
 <li>
-<p>5a. System detects invalid user input.</p>
+<p>5a. System detects invalid information required for setting the financial goal.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>5a1. System requests for the correct user input.</p>
+<p>5a1. System requests for the correct information required for setting the financial goal.</p>
 </li>
 <li>
-<p>5a2. User re-enters input.</p>
+<p>5a2. User re-enters the information required for setting the financial goal.</p>
 </li>
 <li>
-<p>Steps 5a1-5a2 are repeated until the input entered are correct.</p>
+<p>Steps 5a1-5a2 are repeated until the information required for setting the financial goal is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 6.</p>
@@ -2811,17 +2924,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid financial goal to be edited.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct financial goal to be edited.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the financial goal to be edited.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the financial goal to be edited is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2830,17 +2943,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 </div>
 </li>
 <li>
-<p>5a. System detects invalid user input.</p>
+<p>5a. System detects invalid information to be updated.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>5a1. System requests for the correct user input.</p>
+<p>5a1. System requests for the correct information to be updated.</p>
 </li>
 <li>
-<p>5a2. User re-enters input.</p>
+<p>5a2. User re-enters the information to be updated.</p>
 </li>
 <li>
-<p>Steps 5a1-5a2 are repeated until the input entered are correct.</p>
+<p>Steps 5a1-5a2 are repeated until the information to be updated is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 6.</p>
@@ -2880,16 +2993,6 @@ specific bank account, credit card or bonds with ease.</p></td>
 </div>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p><strong>Extensions</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>None</p>
-</li>
-</ul>
 </div>
 <div class="paragraph">
 <p><strong>Actor: Existing user</strong><br>
@@ -2934,17 +3037,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid months to be compared.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct months to be compared.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the months to be compared.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the months to be compared is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -2994,17 +3097,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid details for creating credit card.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct details for creating credit card.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the details for creating credit card.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the details for creating credit card is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -3057,17 +3160,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid expenditure information.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct expenditure information.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the expenditure information.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the expenditure information is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -3120,17 +3223,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid credit card details.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct credit card details.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the credit card details.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the credit card details is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -3167,16 +3270,6 @@ specific bank account, credit card or bonds with ease.</p></td>
 </div>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p><strong>Extensions</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>None</p>
-</li>
-</ul>
 </div>
 <div class="paragraph">
 <p><strong>Actor: Existing user</strong><br>
@@ -3218,17 +3311,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid details of recurring expenditure.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct details of recurring expenditure.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the details of recurring expenditure.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the details of recurring expenditure is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -3278,17 +3371,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid details of recurring income.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct details of recurring income.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the details of recurring income.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the details of recurring income is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -3330,16 +3423,6 @@ specific bank account, credit card or bonds with ease.</p></td>
 </ol>
 </div>
 <div class="paragraph">
-<p><strong>Extensions</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>None</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
 <p><strong>Actor: User with income</strong><br>
 <a id="UC-23"></a> <strong>Use case: UC23 - View recurring income</strong><br>
 <strong>Preconditions:</strong></p>
@@ -3369,16 +3452,6 @@ specific bank account, credit card or bonds with ease.</p></td>
 </div>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p><strong>Extensions</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>None</p>
-</li>
-</ul>
 </div>
 <div class="paragraph">
 <p><strong>Actor: Existing user</strong><br>
@@ -3429,17 +3502,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid recurring expenditure being specified.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct recurring expenditure.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the recurring expenditure.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the recurring expenditure entered are correct.</p>
 </li>
 </ul>
 </div>
@@ -3448,17 +3521,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <p>Use case resumes from step 4.</p>
 </li>
 <li>
-<p>5a. System detects invalid user input.</p>
+<p>5a. System detects invalid recurring expenditure details.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>5a1. System requests for the correct user input.</p>
+<p>5a1. System requests for the correct recurring expenditure details.</p>
 </li>
 <li>
-<p>5a2. User re-enters input.</p>
+<p>5a2. User re-enters the recurring expenditure details.</p>
 </li>
 <li>
-<p>Steps 5a1-5a2 are repeated until the input entered are correct.</p>
+<p>Steps 5a1-5a2 are repeated until the recurring expenditure details is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 6.</p>
@@ -3517,17 +3590,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid recurring income being specified.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct recurring income.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the recurring income.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the recurring income entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -3536,17 +3609,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 </div>
 </li>
 <li>
-<p>5a. System detects invalid user input.</p>
+<p>5a. System detects invalid recurring income details.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>5a1. System requests for the correct user input.</p>
+<p>5a1. System requests for the correct recurring income details.</p>
 </li>
 <li>
-<p>5a2. User re-enters input.</p>
+<p>5a2. User re-enters the recurring income details.</p>
 </li>
 <li>
-<p>Steps 5a1-5a2 are repeated until the input entered are correct.</p>
+<p>Steps 5a1-5a2 are repeated until the recurring income details entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 6.</p>
@@ -3588,16 +3661,6 @@ specific bank account, credit card or bonds with ease.</p></td>
 </ol>
 </div>
 <div class="paragraph">
-<p><strong>Extensions</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>None</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
 <p><strong>Actor: Organized user</strong><br>
 <a id="UC-27"></a> <strong>Use case: UC27 - Export expenditures statement as HTML</strong><br>
 <strong>Preconditions:</strong></p>
@@ -3637,17 +3700,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid months being specified.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct months.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the months.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the months entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -3684,16 +3747,6 @@ specific bank account, credit card or bonds with ease.</p></td>
 </div>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p><strong>Extensions</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>None</p>
-</li>
-</ul>
 </div>
 <div class="paragraph">
 <p><strong>Actor: Achievement oriented user</strong><br>
@@ -3735,17 +3788,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid type of achievement.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct type of achievement.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the type of achievement.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the type of achievement entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -3795,17 +3848,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid achievement being specified.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct achievement.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the achievement.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the achievement entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -3845,17 +3898,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input in personal details.</p>
+<p>3a. System detects invalid investment account details.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct investment account details.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the investment account details.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the investment account details entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -3895,17 +3948,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input in personal details.</p>
+<p>3a. System detects invalid investment account details.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct investment account details.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the investment account details.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the investment account details entered are correct.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -3945,17 +3998,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input in personal details.</p>
+<p>3a. System detects invalid investment account being selected for deletion.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct investment account to be deleted.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the investment account to be deleted.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the investment account to be deleted is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -3984,16 +4037,6 @@ specific bank account, credit card or bonds with ease.</p></td>
 </ol>
 </div>
 <div class="paragraph">
-<p><strong>Extensions</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>None</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
 <p><strong>Actor: Existing user</strong><br>
 <a id="UC-35"></a> <strong>Use case: UC35 - Transfer money between different bank accounts</strong><br>
 <strong>Main success scenario:</strong></p>
@@ -4004,10 +4047,10 @@ specific bank account, credit card or bonds with ease.</p></td>
 <p>User choose to transfer money to another bank account.</p>
 </li>
 <li>
-<p>System requests for destination account and amount to transfer.</p>
+<p>System requests for sender account, receiver account and amount to transfer.</p>
 </li>
 <li>
-<p>User enters the details of destination account and amount to transfer.</p>
+<p>User enters the sender account, receiver account and amount to transfer.</p>
 </li>
 <li>
 <p>System transfers the amount to the specified account.</p>
@@ -4023,17 +4066,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input in personal details.</p>
+<p>3a. System detects invalid sender account, receiver account or amount to transfer.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct sender account, receiver account and amount to transfer.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the sender account, receiver account and amount to transfer.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the sender account, receiver account and amount to transfer is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -4073,16 +4116,6 @@ specific bank account, credit card or bonds with ease.</p></td>
 </div>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p><strong>Extensions</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>None</p>
-</li>
-</ul>
 </div>
 <div class="paragraph">
 <p><strong>Actor: Organized User</strong><br>
@@ -4130,17 +4163,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist">
 <ul>
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid name of the card for the expenditure to be listed.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct name of the card for the expenditure to be listed.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the name of the card for the expenditure to be listed.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the name of the card for the expenditure to be listed is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -4199,17 +4232,17 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a. System detects invalid user input.</p>
+<p>3a. System detects invalid keyword to be used for searching.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>3a1. System requests for the correct user input.</p>
+<p>3a1. System requests for the correct keyword to be used for searching.</p>
 </li>
 <li>
-<p>3a2. User re-enters input.</p>
+<p>3a2. User re-enters the keyword to be used for searching.</p>
 </li>
 <li>
-<p>Steps 3a1-3a2 are repeated until the input entered are correct.</p>
+<p>Steps 3a1-3a2 are repeated until the keyword to be used for searching is entered correctly.</p>
 </li>
 <li>
 <p>Use case resumes from step 4.</p>
@@ -4307,6 +4340,246 @@ specific bank account, credit card or bonds with ease.</p></td>
 <div class="sect1">
 <h2 id="instructions-for-manual-testing"><a class="link" href="#instructions-for-manual-testing">Appendix F: Instructions for Manual Testing</a></h2>
 <div class="sectionbody">
-
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+These instructions only provide a starting point for testers to work on; testers are expected to do more <em>exploratory</em> testing.
+</td>
+</tr>
+</table>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-29 15:49:27 UTC</div></div></div></body></html>
+<div class="paragraph">
+<p>Persistent Storage for card related function are not enabled.</p>
+</div>
+<div class="sect2">
+<h3 id="launch-and-shutdown"><a class="link" href="#launch-and-shutdown">F.1. Launch and Shutdown</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Initial launch</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Download <code>OwlMoney-v1.3.jar</code> file and copy into an empty folder.</p>
+</li>
+<li>
+<p>Open a <strong>Command Prompt</strong> or <strong>Powershell</strong>, navigate to the folder where you placed <code>OwlMoney-v1.3.jar</code>
+in and type <code>java -jar ./OwlMoney-v1.3.jar</code> to start <strong>OwlMoney</strong>.<br>
+   Expected: Shows the CLI stating that a profile cannot be loaded since this is the first time <strong>OwlMoney</strong> is
+starting up. <strong>Maximise</strong> the <strong>Command Prompt</strong> or <strong>Powershell</strong> to enjoy the best experience <strong>OwlMoney</strong> has to offer.</p>
+</li>
+<li>
+<p>Enter your name to create your profile for the first time. (e.g. john)</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="adding-a-savings-account"><a class="link" href="#adding-a-savings-account">F.2. Adding a savings account</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Adding a new <code>savings</code> account</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: There are currently no <code>savings</code> or <code>investment</code> account with the same name.</p>
+</li>
+<li>
+<p>Test case: <code>/add /savings /name JunBank Savings Account /amount 15000 /income 5000</code><br>
+Expected: New <code>savings</code> account is added into the profile.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Adding a duplicate <code>savings</code> account</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: A <code>savings</code> or <code>investment</code> account with the same name has already been created.</p>
+</li>
+<li>
+<p>Test case: <code>/add /savings /name JunBank Savings Account /amount 15000 /income 5000</code><br>
+Expected: Error saying that there is already an existing bank account with the same name.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="adding-an-investment-account"><a class="link" href="#adding-an-investment-account">F.3. Adding an investment account</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Adding a new <code>investment</code> account</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: There are currently no <code>investment</code> or <code>savings</code> account with the
+same name.</p>
+</li>
+<li>
+<p>Test case: <code>/add /investment /name DBB Vickers Account /amount 20000</code><br>
+Expected: New <code>investment</code> is added into the profile.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Adding a duplicate <code>investment</code> account</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: A <code>savings</code> or <code>investment</code> account with the same name has already been created.</p>
+</li>
+<li>
+<p>Test case: <code>/add /investment /name DBB Vickers Account /amount 20000</code><br>
+Expected: Error saying that there is already an existing bank account with the same name.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="editing-a-savings-account"><a class="link" href="#editing-a-savings-account">F.4. Editing a savings account</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Editing the name of a <code>savings</code> account</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: There is an existing <code>savings</code> account to be edited.</p>
+</li>
+<li>
+<p>Test case: <code>/edit /savings /name JunBank Savings Account /newname BunBank Savings Account</code><br>
+Expected: Updated name of the <code>savings</code> account being displayed after being edited.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Editing the amount of a <code>savings</code> account</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: There is an existing <code>savings</code> account to be edited.</p>
+</li>
+<li>
+<p>Test case: <code>/edit /savings /name BunBank Savings Account /amount 21000</code><br>
+Expected: Updated amount of the <code>savings</code> account being displayed after being edited.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="editing-an-investment-account"><a class="link" href="#editing-an-investment-account">F.5. Editing an investment account</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Editing the name of a <code>investment</code> account</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: There is an existing <code>investment</code> account to be edited.</p>
+</li>
+<li>
+<p>Test case: <code>/edit /investment /name DBB Vickers Account /newname BBB Vickers Account</code><br>
+Expected: Updated name of the <code>investment</code> account being displayed after being edited.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Editing the amount of a <code>investment</code> account</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: There is an existing <code>investment</code> account to be edited.</p>
+</li>
+<li>
+<p>Test case: <code>/edit /investment /name BBB Vickers Account /amount 21000</code><br>
+Expected: Updated amount of the <code>investment</code> account being displayed after being edited.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="adding-an-investment-bond"><a class="link" href="#adding-an-investment-bond">F.6. Adding an investment bond</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Adding a new <code>investment</code> <code>bond</code> tied to an existing <code>investment account</code></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: There is an existing <code>investment</code> account to tie the <code>bond</code> to.</p>
+</li>
+<li>
+<p>Test case:
+<code>/add /bonds /name September SSB /amount 1000 /rate 1.65 /year 7 /date 1/10/2019 /from BBB Vickers Account</code><br>
+Expected: New details of the September SSB <code>bond</code> being displayed after being added.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="editing-an-investment-bond"><a class="link" href="#editing-an-investment-bond">F.7. Editing an investment bond</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Editing the rate of an existing <code>investment</code> <code>bond</code> tied to an existing <code>investment account</code></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: There is an existing <code>bond</code> tied to an existing <code>investment</code> account.</p>
+</li>
+<li>
+<p>Test case:
+<code>/edit /bonds /from BBB Vickers Account /name September SSB /rate 1.90</code><br>
+Expected: Updated rate of the September SSB <code>bond</code> being displayed after being edited.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Editing the years of an existing <code>investment</code> <code>bond</code> tied to an existing <code>investment account</code></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: There is an existing <code>bond</code> tied to an existing <code>investment</code> account.</p>
+</li>
+<li>
+<p>Test case:
+<code>/edit /bonds /from BBB Vickers Account /name September SSB /year 10</code><br>
+Expected: Updated years of the September SSB <code>bond</code> being displayed after being edited.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-31 16:18:48 UTC</div></div></div></body></html>
